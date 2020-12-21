@@ -9,7 +9,5 @@ install:
   - pip install -r requirements.txt
 
 script:
-  - flake8 ./home/views.py
-  - flake8 ./home/forms.py
-  - flake8 ./home/models.py
+  - flake8 ./
 

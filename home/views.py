@@ -1,6 +1,7 @@
+from django.shortcuts import redirect, render
+
 from home.forms import StudentForm
 from home.models import Student
-from django.shortcuts import redirect, render
 
 
 def home(request):
