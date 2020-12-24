@@ -7,16 +7,13 @@
 <body>
 <ol>
     {% for student in students %}
-    <li>{{ student.name }}</li>
+    <li>
+        <a href = "/update/{{student.id}}">{{ student.name }}</a>
+    </li>
     {% endfor %}
 </ol>
-
-    <form method="POST" action="/home/">
-                {% csrf_token %}
-                {{ form }}
-                <br>
-                <input type="submit">
-        </form>
-
+<form action="/add">
+   <button>Добавить нового студента</button>
+</form>
 </body>
 </html>
