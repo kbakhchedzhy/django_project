@@ -49,14 +49,14 @@ class StudentUpdateView(View):
     Outputs fields with information about this student. Can update info.
     """
 
-    def get(self, request, id):
+    def get(self, request, id): # noqa
         student = Student.objects.get(id=id)
         student_form = StudentForm(instance=student)
         context = {'form': student_form,
                    'student_id': student.id}
         return render(request, 'update.html', context=context)
 
-    def post(self, request, id):
+    def post(self, request, id): # noqa
         student = Student.objects.get(id=id)
         student_form = StudentForm(request.POST, instance=student)
         if student_form.is_valid():

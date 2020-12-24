@@ -1,4 +1,4 @@
-from django.contrib import admin # noqa
+from django.contrib import admin
 from django.contrib.admin import ModelAdmin
 from django.utils.html import format_html
 
@@ -12,7 +12,10 @@ class StudentAdmin(ModelAdmin):
     def full_name(self, instance):
         if instance.social_url:
             # Correy Gomez has url
-            return format_html("<a href = \"{}\">{} {}</a>", instance.social_url, instance.name, instance.surname)
+            return format_html("<a href = \"{}\">{} {}</a>",
+                               instance.social_url,
+                               instance.name,
+                               instance.surname)
         else:
             return "{} {}".format(instance.name, instance.surname)
 
