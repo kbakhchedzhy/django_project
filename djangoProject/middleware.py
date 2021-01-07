@@ -8,6 +8,7 @@ from django.utils.deprecation import MiddlewareMixin
 class LogMiddleware(MiddlewareMixin):
 
     logging.basicConfig(level=logging.INFO)
+
     def process_request(self, request):
         # процесинг запроса
         resolved_path_info = resolve(request.path_info)
@@ -34,5 +35,3 @@ class IdentifyResponseMiddleware(MiddlewareMixin):
         response['id_request'] = request.META['id_request']
         logging.info('Request hash is %s', response['id_request'])
         return response
-
-
