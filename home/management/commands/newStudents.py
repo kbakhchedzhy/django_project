@@ -26,6 +26,9 @@ class Command(BaseCommand):
             book_of_student.title = uuid.uuid4()
             book_of_student.save()
 
+            teacher, _ = Teacher.objects.get_or_create(name='Bill', surname='Gates')
+            teacher.save()
+
             student = Student()
             student.name = faker.first_name()
             student.surname = faker.last_name()
@@ -37,10 +40,7 @@ class Command(BaseCommand):
             student.email = faker.email()
             student.subject = subject
             student.book = book_of_student
+            student.teacher = teacher
             student.save()
-
-            teacher, _ = Teacher.objects.get_or_create(name=faker.name(), surname=faker.last_name())
-            teacher.students.add(student)
-            teacher.save()
 
         self.stdout.write('End inserting new students.')
