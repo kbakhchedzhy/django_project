@@ -2,7 +2,7 @@ import uuid
 
 from django.core.management.base import BaseCommand
 
-from home.models import Student, Subject, Book, Teacher
+from home.models import Book, Student, Subject, Teacher
 
 
 class Command(BaseCommand):
@@ -19,14 +19,14 @@ class Command(BaseCommand):
 
         for _ in range(options['count']):
 
-            subject, _ = Subject.objects.get_or_create(name_of_subject='Python')
+            subject, _ = Subject.objects.get_or_create(name_of_subject='Python')  # noqa
             subject.save()
 
             book_of_student = Book()
             book_of_student.title = uuid.uuid4()
             book_of_student.save()
 
-            teacher, _ = Teacher.objects.get_or_create(name='Bill', surname='Gates')
+            teacher, _ = Teacher.objects.get_or_create(name='Bill', surname='Gates') # noqa
             teacher.save()
 
             student = Student()
