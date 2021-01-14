@@ -22,9 +22,6 @@ class Student(models.Model):
     book = models.OneToOneField('home.Book',
                                 on_delete=models.CASCADE,
                                 null=True)
-    teacher = models.ForeignKey('home.Teacher',
-                                on_delete=models.SET_NULL,
-                                null=True)
 
 
 class Subject(models.Model):
@@ -47,3 +44,5 @@ class Teacher(models.Model):
     id = models.AutoField(primary_key=True) # noqa
     name = models.CharField(max_length=200)
     surname = models.CharField(max_length=200)
+
+    student = models.ManyToManyField('home.Student')

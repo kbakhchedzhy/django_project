@@ -16,11 +16,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from home.views import StudentAddView, StudentListView, StudentUpdateView
-
+from home.views import BookInfoView, BookListView, \
+    StudentAddView, StudentListView, \
+    StudentUpdateView, SubjectInfoView, \
+    SubjectListView, TeacherInfoView, TeacherListView # noqa
+# noqa
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/', StudentListView.as_view(), name='home'),
     path('add/', StudentAddView.as_view(), name='add'),
     path('update/<id>', StudentUpdateView.as_view(), name='update'),
+    path('books/', BookListView.as_view(), name='books_list'),
+    path('books/<id>', BookInfoView.as_view(), name='book_info'),
+    path('subjects/', SubjectListView.as_view(), name='subjects_list'),
+    path('subjects/<id>', SubjectInfoView.as_view(), name='subject_info'),
+    path('teachers/', TeacherListView.as_view(), name='teacher_list'),
+    path('teachers/<id>', TeacherInfoView.as_view(), name='teacher_info'),
 ]
