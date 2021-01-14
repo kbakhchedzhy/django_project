@@ -1,6 +1,8 @@
+import uuid
+
 from django.core.management.base import BaseCommand
 
-from home.models import Student
+from home.models import Book, Student, Subject, Teacher
 
 
 class Command(BaseCommand):
@@ -14,7 +16,19 @@ class Command(BaseCommand):
         from faker import Faker
         faker = Faker()
         self.stdout.write('Insert new students.')
+
         for _ in range(options['count']):
+
+            subject, _ = Subject.objects.get_or_create(name_of_subject='Python')  # noqa
+            subject.save()
+
+            book_of_student = Book()
+            book_of_student.title = uuid.uuid4()
+            book_of_student.save()
+
+            teacher, _ = Teacher.objects.get_or_create(name='Bill', surname='Gates') # noqa
+            teacher.save()
+
             student = Student()
             student.name = faker.first_name()
             student.surname = faker.last_name()
@@ -24,5 +38,9 @@ class Command(BaseCommand):
             student.description = faker.text()
             student.birthday = faker.date_of_birth()
             student.email = faker.email()
+            student.subject = subject
+            student.book = book_of_student
+            student.teacher = teacher
             student.save()
+
         self.stdout.write('End inserting new students.')
