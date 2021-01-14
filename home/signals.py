@@ -20,6 +20,6 @@ def pre_save_gender(sender, instance, **kwargs):  # noqa
     instance.sex = detector.get_gender(re.sub('[^\w\s]|_', '', instance.name).replace(' ', '')) # noqa
 
 
-@receiver(pre_delete, sender=Student)
-def to_do_normalized_name(sender, instance, **kwargs):
-    raise Exception("don't delete")
+# @receiver(pre_delete, sender=Student)
+# def to_do_normalized_name(sender, instance, **kwargs):
+#     raise Exception("don't delete")
