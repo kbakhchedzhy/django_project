@@ -46,3 +46,12 @@ class Teacher(models.Model):
     surname = models.CharField(max_length=200)
 
     student = models.ManyToManyField('home.Student')
+
+
+class Currency(models.Model):
+
+    id = models.AutoField(primary_key=True) # noqa
+    ccy = models.CharField(max_length=200)
+    base_ccy = models.CharField(max_length=200)
+    buy = models.CharField(max_length=200)
+    sale = models.CharField(max_length=200)
