@@ -1,6 +1,15 @@
 from django.forms import ModelForm
 
-from home.models import Student, Subject, Teacher
+from home.models import Book, Student, Subject, Teacher
+
+
+class BookForm(ModelForm):
+
+    class Meta:
+
+        model = Book
+
+        fields = ['title']
 
 
 class StudentForm(ModelForm):

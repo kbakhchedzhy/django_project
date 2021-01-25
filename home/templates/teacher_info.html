@@ -46,7 +46,7 @@
                         {% csrf_token %}
                         <p><select name="add">
                             {% for student in new_students %}
-                        <option selected value="{{student.id}}">{{student.name}} {{student.surname}}</option>
+                            <option selected value="{{student.id}}">{{student.name}} {{student.surname}}</option>
                             {% endfor %}
                         </select></p>
                     <p><input type="submit" value="Add"></p>
