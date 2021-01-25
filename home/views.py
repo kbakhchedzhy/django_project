@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.generic.base import View
 
-from home.forms import StudentForm, SubjectForm, TeacherForm
+from home.forms import BookForm, StudentForm, SubjectForm, TeacherForm
 from home.models import Book, Student, Subject, Teacher
 
 
@@ -61,18 +61,25 @@ class StudentAddView(View):
     """
 
     def get(self, request): # noqa
-        students = Student.objects.all()
-        students_list = StudentForm()
+        students_form = StudentForm()
+        book_form = BookForm()
 
         return render(request, 'student_add.html',
                       context={
-                          'students': students,
-                          'form': students_list}
+                          'form': students_form,
+                          'form_book': book_form}
                       )
 
     def post(self, request): # noqa
-        students_list = StudentForm(request.POST)
-        students_list.save()
+        book_form = BookForm(request.POST)
+        book_form.save()
+        student_form = StudentForm(request.POST)
+        student_form.save()
+
+        book = Book.objects.last()
+        student = Student.objects.last()
+        student.book = book
+        student.save()
         return redirect(reverse('home'))
 
 
@@ -83,8 +90,11 @@ class StudentUpdateView(View):
 
     def get(self, request, id): # noqa
         student = Student.objects.get(id=id)
+        book = Book.objects.get(id=student.book_id)
         student_form = StudentForm(instance=student)
+        form_book = BookForm(instance=book)
         context = {'form': student_form,
+                   'form_book': form_book,
                    'student_id': student.id}
         return render(request, 'student_update.html', context=context)
 
@@ -229,4 +239,28 @@ class TeacherInfoView(View):
             teacher.student.add(student)
             teacher.save()
 
-        return redirect(reverse('teacher_list'))
+        return redirect(reverse('teacher_info', kwargs={"id": teacher.id}))
+
+
+class TeacherAddView(View):
+    """
+    Output forms for insert new teacher.
+    """
+
+    def get(self, request): # noqa
+        teacher_form = TeacherForm()
+        new_students = Student.objects.all()
+
+        return render(request, 'teacher_add.html',
+                      context={
+                          'form': teacher_form,
+                          'new_students': new_students}
+                      )
+
+    def post(self, request): # noqa
+
+        teacher_form = TeacherForm(request.POST)
+        teacher_form.save()
+        teacher = Teacher.objects.last()
+
+        return redirect(reverse('teacher_info', kwargs={"id": teacher.id}))
