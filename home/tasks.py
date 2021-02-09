@@ -1,12 +1,12 @@
-import requests # noqa
+from celery import chain, shared_task
 
-from celery import chain, shared_task # noqa
-from home.models import Currency # noqa
+from home.models import Currency
 
 
 @shared_task
 def currency_load():
 
+    import requests
     response = requests.get('https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5') # noqa
     return response.json()
 
