@@ -1,3 +1,6 @@
+import csv
+
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.generic.base import View
@@ -264,3 +267,63 @@ class TeacherAddView(View):
         teacher = Teacher.objects.last()
 
         return redirect(reverse('teacher_info', kwargs={"id": teacher.id}))
+
+
+class CSVView(View):
+
+    def get(self, request):
+        response = HttpResponse(content_type="text/csv")
+
+        response['Content-Disposition'] = \
+            "attachment; filename=data_students.csv"
+        writer_for_response = csv.writer(response)
+        writer_for_response.writerow([
+            "Name", "Age", "Sex", "Address", "Description",
+            "B-day", "E-mail", "Book", "Subject", "Teacher"
+        ])
+
+        students = Student.objects.all()
+        for student in students:
+            teachers = ""
+            for teacher in student.teacher_set.all():
+                if teachers:
+                    teachers += ",/n"
+                teachers += teacher.name + " " + teacher.surname
+            writer_for_response.writerow([
+                student.name + " " + student.surname,
+                student.age,
+                student.sex,
+                student.address,
+                student.description,
+                student.birthday,
+                student.email,
+                student.book.title if student.book else None,
+                student.subject.name_of_subject if student.subject else None,
+                teachers if teachers else None,
+            ])
+
+        return response
+
+
+class JsonView(View):
+
+    def get(self, request):
+
+        students = Student.objects.all()
+
+        return JsonResponse({
+            "students": list(students.values(
+                "name",
+                "surname",
+                "age",
+                "sex",
+                "address",
+                "description",
+                "birthday",
+                "email",
+                "book__title",
+                "subject__name_of_subject",
+                "teacher__name",
+                "teacher__surname"
+            )),
+        })

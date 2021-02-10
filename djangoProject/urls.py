@@ -19,7 +19,7 @@ from django.urls import path
 from home.views import BookInfoView, BookListView, \
     StudentAddView, StudentListView, \
     StudentUpdateView, SubjectInfoView, \
-    SubjectListView, TeacherInfoView, TeacherListView, TeacherAddView  # noqa
+    SubjectListView, TeacherInfoView, TeacherListView, TeacherAddView, CSVView, JsonView  # noqa
 # noqa
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,4 +33,6 @@ urlpatterns = [
     path('teachers/', TeacherListView.as_view(), name='teacher_list'),
     path('teachers/<id>', TeacherInfoView.as_view(), name='teacher_info'),
     path('teachers/add/', TeacherAddView.as_view(), name='teacher_add'),
+    path('students/download/', CSVView.as_view(), name='csv_download'),
+    path('students/json/', JsonView.as_view(), name='json_download')
 ]
