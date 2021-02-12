@@ -24,7 +24,7 @@ class Student(models.Model):
                                 null=True)
 
     def __str__(self):
-      return "{} {}".format(self.name, self.surname)
+      return "{} {}".format(self.name, self.surname) # noqa
 
 
 class Subject(models.Model):
@@ -34,7 +34,7 @@ class Subject(models.Model):
     name_of_subject = models.CharField(max_length=200)
 
     def __str__(self):
-      return self.name_of_subject
+      return self.name_of_subject # noqa
 
 
 class Book(models.Model):
@@ -44,7 +44,7 @@ class Book(models.Model):
     title = models.CharField(max_length=200)
 
     def __str__(self):
-      return self.title
+      return self.title # noqa
 
 
 class Teacher(models.Model):

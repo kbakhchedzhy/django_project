@@ -1,15 +1,13 @@
 import csv
 
-from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
-from django.template.loader import get_template
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.views.generic.base import View
 
 from home.emails import send_email
-from home.forms import BookForm, StudentForm, SubjectForm, TeacherForm
+from home.forms import SubjectForm, TeacherForm
 from home.models import Book, Student, Subject, Teacher
 
 
@@ -56,7 +54,6 @@ class StudentAddView(CreateView):
             book_of_student.title = request.POST.get('text_form', '')
             book_of_student.save()
             book = Book.objects.last()
-            student = Student.objects.last()
             form.instance.book = book
 
             return super(StudentAddView, self).form_valid(form)
@@ -318,4 +315,3 @@ class SendMailView(View):
         send_email(recipient_list=['k.bakhchedzhy@gmail.com'])
 
         return HttpResponse("Sent.")
-

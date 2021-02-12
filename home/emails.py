@@ -10,6 +10,3 @@ def send_email(recipient_list=None):
     template = get_template('email.html')
     send_mail(subject, message, email_from, recipient_list,
               html_message=template.render())
-
-
-
