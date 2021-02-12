@@ -23,6 +23,9 @@ class Student(models.Model):
                                 on_delete=models.CASCADE,
                                 null=True)
 
+    def __str__(self):
+      return "{} {}".format(self.name, self.surname)
+
 
 class Subject(models.Model):
 
@@ -30,12 +33,18 @@ class Subject(models.Model):
     id = models.AutoField(primary_key=True) # noqa
     name_of_subject = models.CharField(max_length=200)
 
+    def __str__(self):
+      return self.name_of_subject
+
 
 class Book(models.Model):
 
     # one to one
     id = models.AutoField(primary_key=True) # noqa
     title = models.CharField(max_length=200)
+
+    def __str__(self):
+      return self.title
 
 
 class Teacher(models.Model):
