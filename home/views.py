@@ -1,112 +1,94 @@
 import csv
 
+from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
-from django.urls import reverse
+from django.template.loader import get_template
+from django.urls import reverse, reverse_lazy
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.views.generic.base import View
 
+from home.emails import send_email
 from home.forms import BookForm, StudentForm, SubjectForm, TeacherForm
 from home.models import Book, Student, Subject, Teacher
 
 
-class StudentListView(View):
-    """
-    Output list of students.
-    """
+class StudentListView(ListView):
 
-    def get(self, request): # noqa
+    model = Student
+    template_name = 'student_list.html'
 
-        students = Student.objects.all()
+    def get_queryset(self):
 
-        students_list = StudentForm()
+        ordering = self.request.GET.get('filter_by')
+        name = self.request.GET.get('text_form')
 
-        return render(request, 'student_list.html',
-                      context={
-                          'students': students,
-                          'form': students_list}
-                      )
-
-    def post(self, request): # noqa
-
-        if request.POST.get('filter_by', '') == 'filter_by_teacher':
-
-            students = Student.objects.filter(
-                teacher__name=request.POST.get('text_form', '')
-            )
-
-            return render(request, 'student_list.html', context={
-                          'students': students})
-
-        elif request.POST.get('filter_by', '') == 'filter_by_subject':
-
-            students = Student.objects.filter(
-                subject__name_of_subject=request.POST.get('text_form', '')
-            )
-
-            return render(request, 'student_list.html', context={
-                          'students': students})
-
-        elif request.POST.get('filter_by', '') == 'filter_by_book':
-
-            students = Student.objects.filter(
-                book__id=request.POST.get('text_form', '')
-            )
-
-            return render(request, 'student_list.html', context={
-                          'students': students})
-
-        return redirect(reverse('home'))
+        if ordering == 'filter_by_teacher':
+            return Student.objects.filter(teacher__name=name)
+        elif ordering == 'filter_by_subject':
+            return Student.objects.filter(subject__name_of_subject=name)
+        elif ordering == 'filter_by_book':
+            return Student.objects.filter(book__id=name)
+        else:
+            return Student.objects.all()
 
 
-class StudentAddView(View):
-    """
-    Output forms for insert new students.
-    """
+class StudentAddView(CreateView):
 
-    def get(self, request): # noqa
-        students_form = StudentForm()
-        book_form = BookForm()
+    model = Student
+    fields = ['name',
+              'surname',
+              'age',
+              'sex',
+              'address',
+              'description',
+              'birthday',
+              'email',
+              'social_url']
+    template_name = 'student_add.html'
+    success_url = reverse_lazy('home')
 
-        return render(request, 'student_add.html',
-                      context={
-                          'form': students_form,
-                          'form_book': book_form}
-                      )
+    def post(self, request, *args, **kwargs):
 
-    def post(self, request): # noqa
-        book_form = BookForm(request.POST)
-        book_form.save()
-        student_form = StudentForm(request.POST)
-        student_form.save()
+        form = self.get_form()
+        if form.is_valid():
+            book_of_student = Book()
+            book_of_student.title = request.POST.get('text_form', '')
+            book_of_student.save()
+            book = Book.objects.last()
+            student = Student.objects.last()
+            form.instance.book = book
 
-        book = Book.objects.last()
-        student = Student.objects.last()
-        student.book = book
-        student.save()
-        return redirect(reverse('home'))
+            return super(StudentAddView, self).form_valid(form)
+        else:
+            return self.form_invalid(form)
 
 
-class StudentUpdateView(View):
-    """
-    Outputs fields with information about this student. Can update info.
-    """
+class StudentUpdateView(UpdateView):
 
-    def get(self, request, id): # noqa
-        student = Student.objects.get(id=id)
-        book = Book.objects.get(id=student.book_id)
-        student_form = StudentForm(instance=student)
-        form_book = BookForm(instance=book)
-        context = {'form': student_form,
-                   'form_book': form_book,
-                   'student_id': student.id}
-        return render(request, 'student_update.html', context=context)
+    model = Student
 
-    def post(self, request, id): # noqa
-        student = Student.objects.get(id=id)
-        student_form = StudentForm(request.POST, instance=student)
-        if student_form.is_valid():
-            student_form.save()
-        return redirect(reverse('home'))
+    fields = ['name',
+              'surname',
+              'age',
+              'sex',
+              'address',
+              'description',
+              'birthday',
+              'email',
+              'social_url',
+              'book',
+              'subject'
+              ]
+    template_name = 'student_update.html'
+    success_url = reverse_lazy('home')
+
+
+class StudentDeleteView(DeleteView):
+
+    model = Student
+    template_name = 'student_delete.html'
+    success_url = reverse_lazy('home')
 
 
 class BookListView(View):
@@ -327,3 +309,13 @@ class JsonView(View):
                 "teacher__surname"
             )),
         })
+
+
+class SendMailView(View):
+
+    def get(self, request):
+
+        send_email(recipient_list=['k.bakhchedzhy@gmail.com'])
+
+        return HttpResponse("Sent.")
+
