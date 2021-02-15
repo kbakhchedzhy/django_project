@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.views.decorators.cache import cache_page
 
+from djangoProject import settings
 from home.views import BookInfoView, BookListView, \
     StudentAddView, StudentListView, \
     StudentUpdateView, SubjectInfoView, \
@@ -24,7 +26,7 @@ from home.views import BookInfoView, BookListView, \
 # noqa
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('students/', StudentListView.as_view(), name='home'),
+    path('students/', cache_page(settings.CACHE_TTL)(StudentListView.as_view(), name='home')),
     path('students/add/', StudentAddView.as_view(), name='add'),
     path('students/update/<pk>', StudentUpdateView.as_view(), name='update'),
     path('student/delete/<pk>', StudentDeleteView.as_view(), name='delete'),
