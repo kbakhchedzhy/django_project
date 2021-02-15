@@ -27,8 +27,11 @@ SECRET_KEY = 'ls0x&x5gw+e&_1%ka!w4v5zw6j3#-bup8zek_(8$r-4u&+xtuj'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '0.0.0.0',
+]
 
+STATIC_ROOT = '/home/kate/hillel/django_hw05/static'
 
 # Application definition
 
