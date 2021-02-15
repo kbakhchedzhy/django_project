@@ -19,13 +19,15 @@ from django.urls import path
 from home.views import BookInfoView, BookListView, \
     StudentAddView, StudentListView, \
     StudentUpdateView, SubjectInfoView, \
-    SubjectListView, TeacherInfoView, TeacherListView, TeacherAddView  # noqa
+    SubjectListView, TeacherInfoView, TeacherListView, TeacherAddView, CSVView, JsonView, SendMailView, \
+    StudentDeleteView  # noqa
 # noqa
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('home/', StudentListView.as_view(), name='home'),
-    path('add/', StudentAddView.as_view(), name='add'),
-    path('update/<id>', StudentUpdateView.as_view(), name='update'),
+    path('students/', StudentListView.as_view(), name='home'),
+    path('students/add/', StudentAddView.as_view(), name='add'),
+    path('students/update/<pk>', StudentUpdateView.as_view(), name='update'),
+    path('student/delete/<pk>', StudentDeleteView.as_view(), name='delete'),
     path('books/', BookListView.as_view(), name='books_list'),
     path('books/<id>', BookInfoView.as_view(), name='book_info'),
     path('subjects/', SubjectListView.as_view(), name='subjects_list'),
@@ -33,4 +35,7 @@ urlpatterns = [
     path('teachers/', TeacherListView.as_view(), name='teacher_list'),
     path('teachers/<id>', TeacherInfoView.as_view(), name='teacher_info'),
     path('teachers/add/', TeacherAddView.as_view(), name='teacher_add'),
+    path('students/download/', CSVView.as_view(), name='csv_download'),
+    path('students/json/', JsonView.as_view(), name='json_download'),
+    path('sendmail/', SendMailView.as_view(), name='send_mail')
 ]

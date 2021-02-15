@@ -10,13 +10,13 @@
         <h1 class="fw-light">Список студентов</h1>
           <br>
           <div class= "py-3">
-            <form action="/add">
+            <form action="/students/add">
               <button>Добавить нового студента</button>
             </form>
           </div>
         <div class = "py-4">
-          <form method = "POST" action="/home/">
-            {% csrf_token %}
+          <form action="/students">
+          {% csrf_token %}
             <p> Выберите фильтр:
               <select name="filter_by">
                 <option selected value="filter_by_teacher">Учитель</option>
@@ -27,9 +27,14 @@
                 <input maxlength="50" size="20" onfocus="this.value=''"  name="text_form">
               </p>
             </p>
-            <p><input type="submit" value="Вывести" name="filter_button"></p>
+            <p><input type="submit" value="Вывести"></p>
           </form>
         </div>
+      </div>
+      <div class= "py-3">
+            <form action="/students/download/">
+              <button>Cкачать студентов</button>
+            </form>
       </div>
     </div>
   </section>
@@ -39,11 +44,11 @@
     <div class="container">
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
-          {% for student in students %}
+          {% for student in object_list %}
         <div class="col">
           <div class="card shadow-sm">
             <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#549174"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">
-              <a href="/update/{{student.id}}">{{student.name}} {{student.surname}}</a>
+              <a href="/students/update/{{student.id}}">{{student.name}} {{student.surname}}</a>
             </text></svg>
 
             <div class="card-body">
@@ -59,10 +64,8 @@
                 Book: {{student.book.title}}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  {% if student.social_url %}
-                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="document.location='{{student.social_url}}'">View</button>
-                  {% endif %}
-                  <button type="button" class="btn btn-sm btn-outline-secondary" onclick="document.location='/update/{{student.id}}'">Edit</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" onclick="document.location='/student/delete/{{student.id}}'">Delete</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" onclick="document.location='/students/update/{{student.id}}'">Edit</button>
                 </div>
               </div>
             </div>
