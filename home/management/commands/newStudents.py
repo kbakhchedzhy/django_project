@@ -1,9 +1,10 @@
 from django.core.management.base import BaseCommand
-from faker import Faker # noqa
-from home.models import Student # noqa
+
+from home.models import Student
 
 
 class Command(BaseCommand):
+
 
     help = 'Add new student(s), default count of new students = 10' # noqa
 
@@ -11,6 +12,7 @@ class Command(BaseCommand):
         parser.add_argument('-c', '--count', type=int, default=10)
 
     def handle(self, *args, **options):
+        from faker import Faker
         faker = Faker()
         self.stdout.write('Insert new students.')
         for _ in range(options['count']):
