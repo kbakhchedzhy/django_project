@@ -26,7 +26,7 @@ from home.views import BookInfoView, BookListView, \
 # noqa
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('students/', cache_page(settings.CACHE_TTL)(StudentListView.as_view(), name='home')), # noqa
+    path('students/', cache_page(settings.CACHE_TTL)(StudentListView.as_view())), # noqa
     path('students/add/', StudentAddView.as_view(), name='add'),
     path('students/update/<pk>', StudentUpdateView.as_view(), name='update'),
     path('student/delete/<pk>', StudentDeleteView.as_view(), name='delete'),
