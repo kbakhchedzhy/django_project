@@ -22,9 +22,9 @@ class Student(models.Model):
     book = models.OneToOneField('home.Book',
                                 on_delete=models.CASCADE,
                                 null=True)
-    teacher = models.ForeignKey('home.Teacher',
-                                on_delete=models.SET_NULL,
-                                null=True)
+
+    def __str__(self):
+      return "{} {}".format(self.name, self.surname) # noqa
 
 
 class Subject(models.Model):
@@ -33,12 +33,18 @@ class Subject(models.Model):
     id = models.AutoField(primary_key=True) # noqa
     name_of_subject = models.CharField(max_length=200)
 
+    def __str__(self):
+      return self.name_of_subject # noqa
+
 
 class Book(models.Model):
 
     # one to one
     id = models.AutoField(primary_key=True) # noqa
     title = models.CharField(max_length=200)
+
+    def __str__(self):
+      return self.title # noqa
 
 
 class Teacher(models.Model):
@@ -47,3 +53,14 @@ class Teacher(models.Model):
     id = models.AutoField(primary_key=True) # noqa
     name = models.CharField(max_length=200)
     surname = models.CharField(max_length=200)
+
+    student = models.ManyToManyField('home.Student')
+
+
+class Currency(models.Model):
+
+    id = models.AutoField(primary_key=True) # noqa
+    ccy = models.CharField(max_length=200)
+    base_ccy = models.CharField(max_length=200)
+    buy = models.CharField(max_length=200)
+    sale = models.CharField(max_length=200)

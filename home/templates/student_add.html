@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+
+<div class="container">
+  <main>
+    <div class="py-4 text-center">
+      <img class="d-block mx-auto mb-4">
+      <h2>Добавить нового студенте</h2>
+    </div>
+
+      <div class="col-md-7 col-lg-8">
+          <div class="row g-6">
+            <div class="col-sm-6">
+                <form method="POST" action="/students/add/">
+                    {% csrf_token %}
+                    <p>Name: {{form.name}}</p>
+                    <p>Surname: {{form.surname}}</p>
+                    <p>Age: {{form.age}}</p>
+                    <p>Sex: {{form.sex}}</p>
+                    <p>Address: {{form.address}}</p>
+                    <p>Description:</p> {{form.description}}
+                    <p>Birthday: {{form.birthday}}</p>
+                    <p>Email: {{form.email}}</p>
+                    <p>Social_url: {{form.social_url}}</p>
+                    <p>Book: <input maxlength="50" size="20" onfocus="this.value=''"  name="text_form"></p>
+                    <div class="py-3">
+                        <input type="submit">
+                    </div>
+                </form>
+            </div>
+          </div>
+    </div>
+  </main>
+</div>
+
+{% endblock %}

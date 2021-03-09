@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from celery.schedules import crontab
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -25,8 +27,11 @@ SECRET_KEY = 'ls0x&x5gw+e&_1%ka!w4v5zw6j3#-bup8zek_(8$r-4u&+xtuj'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '0.0.0.0',
+]
 
+STATIC_ROOT = '/home/kate/hillel/django_hw05/static'
 
 # Application definition
 
@@ -84,6 +89,15 @@ DATABASES = {
     }
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
+    }
+}
+
+CACHE_TTL = 60 * 15
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -124,4 +138,19 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CELERY_BROKER_URL = 'amqp://localhost'
-CELERY_RESULT_BACKEND = 'rpc://localhost'
+CELERY_RESULT_BACKEND = 'db+sqlite:///celery_results.sqlite3'
+
+CELERY_BEAT_SCHEDULE = {
+    'periodic_task': {
+        'task': 'home.tasks.private_bank',
+        'schedule': crontab(minute='0', hour='8,20'),
+
+    }
+}
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'k.bahchedzhi@gmail.com'
+EMAIL_HOST_PASSWORD = 'password'

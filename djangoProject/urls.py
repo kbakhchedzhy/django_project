@@ -15,12 +15,29 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.views.decorators.cache import cache_page
 
-from home.views import StudentAddView, StudentListView, StudentUpdateView
-
+from djangoProject import settings
+from home.views import BookInfoView, BookListView, \
+    StudentAddView, StudentListView, \
+    StudentUpdateView, SubjectInfoView, \
+    SubjectListView, TeacherInfoView, TeacherListView, TeacherAddView, CSVView, JsonView, SendMailView, \
+    StudentDeleteView  # noqa
+# noqa
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('home/', StudentListView.as_view(), name='home'),
-    path('add/', StudentAddView.as_view(), name='add'),
-    path('update/<id>', StudentUpdateView.as_view(), name='update'),
+    path('students/', cache_page(settings.CACHE_TTL)(StudentListView.as_view(), name='home')), # noqa
+    path('students/add/', StudentAddView.as_view(), name='add'),
+    path('students/update/<pk>', StudentUpdateView.as_view(), name='update'),
+    path('student/delete/<pk>', StudentDeleteView.as_view(), name='delete'),
+    path('books/', BookListView.as_view(), name='books_list'),
+    path('books/<id>', BookInfoView.as_view(), name='book_info'),
+    path('subjects/', SubjectListView.as_view(), name='subjects_list'),
+    path('subjects/<id>', SubjectInfoView.as_view(), name='subject_info'),
+    path('teachers/', TeacherListView.as_view(), name='teacher_list'),
+    path('teachers/<id>', TeacherInfoView.as_view(), name='teacher_info'),
+    path('teachers/add/', TeacherAddView.as_view(), name='teacher_add'),
+    path('students/download/', CSVView.as_view(), name='csv_download'),
+    path('students/json/', JsonView.as_view(), name='json_download'),
+    path('sendmail/', SendMailView.as_view(), name='send_mail')
 ]
