@@ -7,6 +7,7 @@ from home.models import Book, Student, Subject, Teacher
 
 class Command(BaseCommand):
 
+
     help = 'Add new student(s), default count of new students = 10' # noqa
 
     def add_arguments(self, parser):
