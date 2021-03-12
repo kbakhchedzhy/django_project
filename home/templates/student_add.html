@@ -12,7 +12,7 @@
       <div class="col-md-7 col-lg-8">
           <div class="row g-6">
             <div class="col-sm-6">
-                <form method="POST" action="/students/add/">
+                <form method="POST" action="/students/add/" enctype="multipart/form-data">
                     {% csrf_token %}
                     <p>Name: {{form.name}}</p>
                     <p>Surname: {{form.surname}}</p>
@@ -24,6 +24,7 @@
                     <p>Email: {{form.email}}</p>
                     <p>Social_url: {{form.social_url}}</p>
                     <p>Book: <input maxlength="50" size="20" onfocus="this.value=''"  name="text_form"></p>
+                    <p>Photo: {{form.picture}}</p>
                     <div class="py-3">
                         <input type="submit">
                     </div>
