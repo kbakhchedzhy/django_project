@@ -22,7 +22,7 @@ from home.views import BookInfoView, BookListView, \
     StudentAddView, StudentListView, \
     StudentUpdateView, SubjectInfoView, \
     SubjectListView, TeacherInfoView, TeacherListView, TeacherAddView, CSVView, JsonView, SendMailView, \
-    StudentDeleteView  # noqa
+    StudentDeleteView, SignUpView, ActivateView, SignInView, SignOutView  # noqa
 # noqa
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -37,7 +37,12 @@ urlpatterns = [
     path('teachers/', TeacherListView.as_view(), name='teacher_list'),
     path('teachers/<id>', TeacherInfoView.as_view(), name='teacher_info'),
     path('teachers/add/', TeacherAddView.as_view(), name='teacher_add'),
+    path('activate/<uid>/<token>', ActivateView.as_view(), name='activate_view'),
+    path('login', SignInView.as_view(), name='login_view'),
+    path('register/', SignUpView.as_view(), name='sign_up'),
+    path('logout', SignOutView.as_view(), name='sign_out_view'),
     path('students/download/', CSVView.as_view(), name='csv_download'),
     path('students/json/', JsonView.as_view(), name='json_download'),
-    path('sendmail/', SendMailView.as_view(), name='send_mail')
+    path('sendmail/', SendMailView.as_view(), name='send_mail'),
+
 ]
