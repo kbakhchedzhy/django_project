@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='student',
             name='picture',
-            field=models.ImageField(blank=True, null=True, upload_to='pictures'),
+            field=models.ImageField(blank=True, null=True, upload_to='pictures'), # noqa
         ),
     ]

@@ -17,6 +17,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='student',
             name='photo',
-            field=models.ImageField(blank=True, null=True, upload_to='pictures'),
+            field=models.ImageField(blank=True, null=True, upload_to='pictures'), # noqa
         ),
     ]
