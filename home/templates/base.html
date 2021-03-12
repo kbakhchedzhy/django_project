@@ -43,12 +43,23 @@
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
       <header class="mb-auto">
         <div>
-          <nav class="nav nav-masthead justify-content-center float-md-end">
+          <nav class="nav nav-masthead justify-content-center float-md-start">
             <a class="nav-link" style="color:green" href="/students">Students</a>
             <a class="nav-link" style="color:green" href="/books">Books</a>
             <a class="nav-link" style="color:green" href="/subjects">Subjects</a>
             <a class="nav-link" style="color:green" href="/teachers">Teachers</a>
           </nav>
+          {% if not user.is_authenticated %}
+            <nav class="nav nav-masthead justify-content-center float-md-end">
+              <a class="nav-link" style="color:black; font-size:150%" href="/register">Sign Up</a>
+              <a class="nav-link" style="color:black; font-size:150%"  href="/login">Sign In</a>
+            </nav>
+          {% else %}
+            <nav class="nav nav-masthead justify-content-center float-md-end">
+              <a class="nav-link" style="color:black; font-size:150%">{{user.username}}</a>
+              <a class="nav-link" style="color:black; font-size:150%"  href="/logout">Logout</a>
+            </nav>
+          {% endif %}
         </div>
       </header>
     </div>

@@ -339,9 +339,7 @@ class SignUpView(View):
     def post(self, request):
 
         sign_up_form = UserSignUpForm(request.POST)
-        print("1")
         if sign_up_form.is_valid():
-            print("2")
             user = sign_up_form.save()
             user.is_active = False
             user.save()
@@ -408,4 +406,4 @@ class SignOutView(View):
     def get(self, request):
 
         logout(request)
-        return HttpResponse('Logouted')
+        return redirect('/students')
