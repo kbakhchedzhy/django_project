@@ -15,18 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from django.views.decorators.cache import cache_page
 
-from djangoProject import settings
 from home.views import BookInfoView, BookListView, \
     StudentAddView, StudentListView, \
     StudentUpdateView, SubjectInfoView, \
     SubjectListView, TeacherInfoView, TeacherListView, TeacherAddView, CSVView, JsonView, SendMailView, \
-    StudentDeleteView  # noqa
+    StudentDeleteView, SignUpView, ActivateView, SignInView, SignOutView  # noqa
 # noqa
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('students/', cache_page(settings.CACHE_TTL)(StudentListView.as_view())), # noqa
+    # path('students/', cache_page(settings.CACHE_TTL)(StudentListView.as_view())), # noqa
+    path('students/', StudentListView.as_view()), # noqa
     path('students/add/', StudentAddView.as_view(), name='add'),
     path('students/update/<pk>', StudentUpdateView.as_view(), name='update'),
     path('student/delete/<pk>', StudentDeleteView.as_view(), name='delete'),
@@ -37,7 +36,12 @@ urlpatterns = [
     path('teachers/', TeacherListView.as_view(), name='teacher_list'),
     path('teachers/<id>', TeacherInfoView.as_view(), name='teacher_info'),
     path('teachers/add/', TeacherAddView.as_view(), name='teacher_add'),
+    path('activate/<uid>/<token>', ActivateView.as_view(), name='activate_view'), # noqa
+    path('login', SignInView.as_view(), name='login_view'),
+    path('register/', SignUpView.as_view(), name='sign_up'),
+    path('logout', SignOutView.as_view(), name='sign_out_view'),
     path('students/download/', CSVView.as_view(), name='csv_download'),
     path('students/json/', JsonView.as_view(), name='json_download'),
-    path('sendmail/', SendMailView.as_view(), name='send_mail')
+    path('sendmail/', SendMailView.as_view(), name='send_mail'),
+
 ]
