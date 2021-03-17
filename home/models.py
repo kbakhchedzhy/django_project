@@ -14,6 +14,7 @@ class Student(models.Model):
     email = models.CharField(max_length=200)
     social_url = models.CharField(max_length=500, null=True, blank=True)
     is_active = models.CharField(max_length=500, null=True, blank=True)
+    picture = models.FileField(upload_to='pictures', null=True, blank=True)
     normalized_name = models.CharField(max_length=500, null=True, blank=True)
 
     subject = models.ForeignKey('home.Subject',

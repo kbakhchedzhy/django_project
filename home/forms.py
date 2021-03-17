@@ -28,7 +28,8 @@ class StudentForm(ModelForm):
                   'description',
                   'birthday',
                   'email',
-                  'social_url'
+                  'social_url',
+                  'picture',
                   ]
 
 
