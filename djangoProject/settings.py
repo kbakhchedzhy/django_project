@@ -90,6 +90,9 @@ DATABASES = {
     }
 }
 
+MEDIA_ROOT = '/home/kate/hillel/django_hw05/media'
+MEDIA_URL = 'media/'
+
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',

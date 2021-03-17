@@ -48,7 +48,8 @@ class StudentAddView(CreateView):
               'description',
               'birthday',
               'email',
-              'social_url']
+              'social_url',
+              'picture']
     template_name = 'student_add.html'
     success_url = reverse_lazy('home')
 
@@ -81,7 +82,8 @@ class StudentUpdateView(UpdateView):
               'email',
               'social_url',
               'book',
-              'subject'
+              'subject',
+              'picture'
               ]
     template_name = 'student_update.html'
     success_url = reverse_lazy('home')
