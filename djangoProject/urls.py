@@ -14,17 +14,59 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf import settings
+from django.conf.urls import url
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
+from rest_framework import permissions, routers
 
 from home.views import BookInfoView, BookListView, \
     StudentAddView, StudentListView, \
     StudentUpdateView, SubjectInfoView, \
     SubjectListView, TeacherInfoView, TeacherListView, TeacherAddView, CSVView, JsonView, SendMailView, \
-    StudentDeleteView, SignUpView, ActivateView, SignInView, SignOutView  # noqa
+    StudentDeleteView, SignUpView, ActivateView, SignInView, SignOutView, StudentViewSet, SubjectViewSet, \
+    TeacherViewSet, BookViewSet  # noqa
 # noqa
+
+schema_view = get_schema_view(
+   openapi.Info(
+      title="Students Homework API",
+      default_version='v1',
+      description="Hillel homework for our students",
+      terms_of_service="https://www.google.com/policies/terms/",
+      contact=openapi.Contact(email="contact@snippets.local"),
+      license=openapi.License(name="BSD License"),
+   ),
+   public=True,
+   permission_classes=(permissions.AllowAny,),
+)
+
+
+
+router = routers.DefaultRouter()
+router.register(r'students/view_set', StudentViewSet,
+                basename='students_api')
+router.register(r'subject/view_set', SubjectViewSet,
+                basename='subject_api')
+router.register(r'teacher/view_set', TeacherViewSet,
+                basename='teacher_api')
+router.register(r'book/view_set', BookViewSet,
+                basename='report_card_api')
+
 urlpatterns = [
+
+    url(r'^swagger(?P<format>\.json|\.yaml)',
+        schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    url(r'^swagger/', schema_view.with_ui('swagger', cache_timeout=0),
+        name='schema-swagger-ui'),
+    url(r'^redoc/', schema_view.with_ui('redoc', cache_timeout=0),
+        name='schema-redoc'),
+
+
+    path('drf/', include(router.urls)),
+
     path('admin/', admin.site.urls),
     # path('students/', cache_page(settings.CACHE_TTL)(StudentListView.as_view())), # noqa
     path('students/', StudentListView.as_view(), name='home'), # noqa
