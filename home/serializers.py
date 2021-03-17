@@ -1,6 +1,5 @@
-from rest_framework import serializers
-
-from home.models import Student, Subject, Teacher, Book
+from home.models import Book, Student, Subject, Teacher  # noqa
+from rest_framework import serializers  # noqa I003
 
 
 class StudentSerializer(serializers.ModelSerializer):
@@ -8,7 +7,8 @@ class StudentSerializer(serializers.ModelSerializer):
     class Meta:
 
         model = Student
-        fields = ['name', 'surname', 'age', 'sex', 'address', 'description', 'birthday', 'email']
+        fields = ['name', 'surname', 'age', 'sex', 'address',
+                  'description', 'birthday', 'email']
 
 
 class SubjectSerializer(serializers.ModelSerializer):
