@@ -11,10 +11,13 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 from django.views.generic.base import View
-
-from home.emails import send_email, send_email_signup
-from home.forms import SubjectForm, TeacherForm, UserSignUpForm
-from home.models import Book, Student, Subject, Teacher
+ # noqa
+from home.emails import send_email, send_email_signup # noqa
+from home.forms import SubjectForm, TeacherForm, UserSignUpForm # noqa
+from home.models import Book, Student, Subject, Teacher # noqa
+from home.serializers import BookSerializer, StudentSerializer, \
+    SubjectSerializer, TeacherSerializer # noqa
+from rest_framework.viewsets import ModelViewSet # noqa
 
 
 class StudentListView(ListView):
@@ -408,3 +411,25 @@ class SignOutView(View):
 
         logout(request)
         return redirect('/students')
+
+
+# API
+
+class StudentViewSet(ModelViewSet):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+
+class SubjectViewSet(ModelViewSet):
+    queryset = Subject.objects.all()
+    serializer_class = SubjectSerializer
+
+
+class TeacherViewSet(ModelViewSet):
+    queryset = Teacher.objects.all()
+    serializer_class = TeacherSerializer
+
+
+class BookViewSet(ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
