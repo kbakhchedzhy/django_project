@@ -11,6 +11,10 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 from django.views.generic.base import View
+# noqa
+from django_filters.rest_framework import DjangoFilterBackend  # noqa
+from rest_framework.filters import OrderingFilter  # noqa
+from rest_framework.pagination import PageNumberPagination
  # noqa
 from home.emails import send_email, send_email_signup # noqa
 from home.forms import SubjectForm, TeacherForm, UserSignUpForm # noqa
@@ -418,18 +422,34 @@ class SignOutView(View):
 class StudentViewSet(ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+    pagination_class = PageNumberPagination
+    filter_backends = (DjangoFilterBackend, OrderingFilter)
+    filterset_fields = ('name',)
+    ordering_fields = ('name',)
 
 
 class SubjectViewSet(ModelViewSet):
     queryset = Subject.objects.all()
     serializer_class = SubjectSerializer
+    pagination_class = PageNumberPagination
+    filter_backends = (DjangoFilterBackend, OrderingFilter)
+    filterset_fields = ('name_of_subject',)
+    ordering_fields = ('name_of_subject',)
 
 
 class TeacherViewSet(ModelViewSet):
     queryset = Teacher.objects.all()
     serializer_class = TeacherSerializer
+    pagination_class = PageNumberPagination
+    filter_backends = (DjangoFilterBackend, OrderingFilter)
+    filterset_fields = ('name',)
+    ordering_fields = ('name',)
 
 
 class BookViewSet(ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    pagination_class = PageNumberPagination
+    filter_backends = (DjangoFilterBackend, OrderingFilter)
+    filterset_fields = ('title',)
+    ordering_fields = ('title',)
