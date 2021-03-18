@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
+from django.db import transaction
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
@@ -433,10 +434,12 @@ class StudentViewSet(ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        book_of_student = Book.objects.create(**request.data.pop('book'))
-        book_of_student.save()
+        book = request.data.pop('book')
         student = Student.objects.create(**request.data)
-        student.book = book_of_student
+        with transaction.atomic():
+            book_of_student = Book.objects.create(**book)
+            book_of_student.save()
+            student.book = book_of_student
         student.save()
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
