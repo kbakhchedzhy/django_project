@@ -11,11 +11,11 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 from django.views.generic.base import View
- # noqa
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import OrderingFilter
+# noqa
+from django_filters.rest_framework import DjangoFilterBackend  # noqa
+from rest_framework.filters import OrderingFilter  # noqa
 from rest_framework.pagination import PageNumberPagination
-
+ # noqa
 from home.emails import send_email, send_email_signup # noqa
 from home.forms import SubjectForm, TeacherForm, UserSignUpForm # noqa
 from home.models import Book, Student, Subject, Teacher # noqa
