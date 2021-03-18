@@ -21,7 +21,6 @@ class StudentSerializer(serializers.ModelSerializer):
                   'description', 'birthday', 'email', 'book']
 
 
-
 class SubjectSerializer(serializers.ModelSerializer):
 
     class Meta:

@@ -1,5 +1,4 @@
 import csv
-from wsgiref import headers
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -15,8 +14,8 @@ from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 from django.views.generic.base import View
 # noqa
 from django_filters.rest_framework import DjangoFilterBackend  # noqa
-from rest_framework import status
-from rest_framework.response import Response
+from rest_framework import status  # noqa
+from rest_framework.response import Response  # noqa
 from rest_framework.filters import OrderingFilter  # noqa
 from rest_framework.pagination import PageNumberPagination
  # noqa
@@ -442,7 +441,9 @@ class StudentViewSet(ModelViewSet):
             student.book = book_of_student
         student.save()
         headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return Response(serializer.data,
+                        status=status.HTTP_201_CREATED,
+                        headers=headers)
 
 
 class SubjectViewSet(ModelViewSet):
