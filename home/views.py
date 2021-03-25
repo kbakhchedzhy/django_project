@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
+from django.db import transaction
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
@@ -13,6 +14,8 @@ from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 from django.views.generic.base import View
 # noqa
 from django_filters.rest_framework import DjangoFilterBackend  # noqa
+from rest_framework import status  # noqa
+from rest_framework.response import Response  # noqa
 from rest_framework.filters import OrderingFilter  # noqa
 from rest_framework.pagination import PageNumberPagination
  # noqa
@@ -426,6 +429,21 @@ class StudentViewSet(ModelViewSet):
     filter_backends = (DjangoFilterBackend, OrderingFilter)
     filterset_fields = ('name',)
     ordering_fields = ('name',)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        book = request.data.pop('book')
+        student = Student.objects.create(**request.data)
+        with transaction.atomic():
+            book_of_student = Book.objects.create(**book)
+            book_of_student.save()
+            student.book = book_of_student
+        student.save()
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data,
+                        status=status.HTTP_201_CREATED,
+                        headers=headers)
 
 
 class SubjectViewSet(ModelViewSet):
