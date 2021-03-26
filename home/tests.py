@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
 
-from home.models import Student, Book, Subject
+from home.models import Student, Book, Subject, Teacher
 
 
 class StudentApiTests(APITestCase):
@@ -129,6 +129,113 @@ class SubjectApiTests(APITestCase):
                                            kwargs={'pk': subjects[0].id}))
         students = Student.objects.all()
         self.assertEqual(students.count(), 0)
+
+
+class BookApiTests(APITestCase):
+
+    def setUp(self) -> None:
+        Book.objects.create(title='idx_732923')
+
+    def test_get_subjects(self):
+        response = self.client.get(reverse('book_api-list'))
+        result = {'count': 1,
+                  'next': None,
+                  'previous': None,
+                  'results': [{
+                      'title': 'idx_732923'}]
+                  }
+        self.assertEqual(response.json(),
+                         result
+                         )
+
+    def test_create_subjects(self):
+        data = {
+            'title': 'idx_3224923'
+            }
+        response = self.client.post(reverse('book_api-list'),
+                                    data=data, format='json'
+                                    )
+        self.assertEqual(response.status_code,
+                         status.HTTP_201_CREATED)
+        book = Book.objects.all()
+        self.assertEqual(book.count(), 2)
+
+    def test_update_students(self):
+        book = Book.objects.all()
+        data = {
+            'title': 'idx_1111923'
+            }
+        response = self.client.put(reverse('book_api-detail',
+                                           kwargs={'pk': book[0].id}),
+                                   data=data, format='json'
+                                   )
+        result = {'title': 'idx_1111923'
+                  }
+
+        self.assertEqual(response.json(), result)
+
+    def test_delete_students(self):
+        book = Book.objects.all()
+        self.client.delete(reverse('book_api-detail',
+                                           kwargs={'pk': book[0].id}))
+        students = Student.objects.all()
+        self.assertEqual(students.count(), 0)
+
+
+class TeacherApiTests(APITestCase):
+
+    def setUp(self) -> None:
+        Teacher.objects.create(name='Zero',
+                               surname='Teacher')
+
+    def test_get_students(self):
+        response = self.client.get(reverse('teacher_api-list'))
+        result = {'count': 1,
+                  'next': None,
+                  'previous': None,
+                  'results': [{'name': 'Zero',
+                               'surname': 'Teacher'}]
+                  }
+        self.assertEqual(response.json(),
+                         result
+                         )
+
+    def test_create_students(self):
+        data = {
+            "name": "First",
+            "surname": "Teacher",
+            "student": [4]
+            }
+        response = self.client.post(reverse('teacher_api-list'),
+                                    data=data, format='json'
+                                    )
+        self.assertEqual(response.status_code,
+                         status.HTTP_201_CREATED)
+        teachers = Teacher.objects.all()
+        self.assertEqual(teachers.count(), 2)
+
+    def test_update_students(self):
+        teachers = Teacher.objects.all()
+        data = {
+            'name': 'Second',
+            'surname': 'Teacher-2'
+            }
+        response = self.client.put(reverse('teacher_api-detail',
+                                           kwargs={'pk': teachers[0].id}),
+                                   data=data, format='json'
+                                   )
+        result = {'name': 'Second',
+                   'surname': 'Teacher-2'
+                  }
+
+        self.assertEqual(response.json(), result)
+
+    def test_delete_students(self):
+        teachers = Teacher.objects.all()
+        self.client.delete(reverse('teacher_api-detail',
+                                           kwargs={'pk': teachers[0].id}))
+        teachers = Teacher.objects.all()
+        self.assertEqual(teachers.count(), 0)
 
 
 

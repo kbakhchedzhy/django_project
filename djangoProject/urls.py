@@ -52,7 +52,7 @@ router.register(r'subject/view_set', SubjectViewSet,
 router.register(r'teacher/view_set', TeacherViewSet,
                 basename='teacher_api')
 router.register(r'book/view_set', BookViewSet,
-                basename='report_card_api')
+                basename='book_api')
 
 urlpatterns = [
 
