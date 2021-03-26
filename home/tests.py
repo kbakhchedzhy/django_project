@@ -1,9 +1,9 @@
-from django.test import TestCase # noqa
-from rest_framework import status
+from django.test import TestCase  # noqa
+from rest_framework import status  # noqa
 from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
 
-from home.models import Student, Book, Subject, Teacher
+from home.models import Book, Student, Subject, Teacher  # noqa
 
 
 class StudentApiTests(APITestCase):
