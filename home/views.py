@@ -423,7 +423,7 @@ class SignOutView(View):
 # API
 
 class StudentViewSet(ModelViewSet):
-    queryset = Student.objects.all()
+    queryset = Student.objects.all().order_by('name')
     serializer_class = StudentSerializer
     pagination_class = PageNumberPagination
     filter_backends = (DjangoFilterBackend, OrderingFilter)
