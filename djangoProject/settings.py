@@ -165,6 +165,6 @@ EMAIL_HOST_USER = os.environ.get("GMAIL_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("GMAIL_PASSWORD")
 
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',  # noqa
     'PAGE_SIZE': 20
 }

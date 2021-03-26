@@ -1,5 +1,3 @@
-from unittest import skip
-
 from django.test import TestCase # noqa
 from rest_framework import status
 from rest_framework.reverse import reverse
@@ -60,14 +58,14 @@ class StudentApiTests(APITestCase):
                                    data=data, format='json'
                                    )
         result = {'address': None,
-                   'age': 20,
-                   'birthday': None,
-                   'book':  {'title': 'idx3242342'},
-                   'description': None,
-                   'email': None,
-                   'name': 'Second',
-                   'sex': 'unknown',
-                   'surname': 'User2'
+                  'age': 20,
+                  'birthday': None,
+                  'book':  {'title': 'idx3242342'},
+                  'description': None,
+                  'email': None,
+                  'name': 'Second',
+                  'sex': 'unknown',
+                  'surname': 'User2'
                   }
 
         self.assertEqual(response.json(), result)
@@ -75,7 +73,7 @@ class StudentApiTests(APITestCase):
     def test_delete_students(self):
         students = Student.objects.all()
         self.client.delete(reverse('students_api-detail',
-                                           kwargs={'pk': students[0].id}))
+                                   kwargs={'pk': students[0].id}))
         students = Student.objects.all()
         self.assertEqual(students.count(), 0)
 
@@ -126,7 +124,7 @@ class SubjectApiTests(APITestCase):
     def test_delete_students(self):
         subjects = Subject.objects.all()
         self.client.delete(reverse('subject_api-detail',
-                                           kwargs={'pk': subjects[0].id}))
+                                   kwargs={'pk': subjects[0].id}))
         students = Student.objects.all()
         self.assertEqual(students.count(), 0)
 
@@ -177,7 +175,7 @@ class BookApiTests(APITestCase):
     def test_delete_students(self):
         book = Book.objects.all()
         self.client.delete(reverse('book_api-detail',
-                                           kwargs={'pk': book[0].id}))
+                                   kwargs={'pk': book[0].id}))
         students = Student.objects.all()
         self.assertEqual(students.count(), 0)
 
@@ -225,7 +223,7 @@ class TeacherApiTests(APITestCase):
                                    data=data, format='json'
                                    )
         result = {'name': 'Second',
-                   'surname': 'Teacher-2'
+                  'surname': 'Teacher-2'
                   }
 
         self.assertEqual(response.json(), result)
@@ -233,10 +231,6 @@ class TeacherApiTests(APITestCase):
     def test_delete_students(self):
         teachers = Teacher.objects.all()
         self.client.delete(reverse('teacher_api-detail',
-                                           kwargs={'pk': teachers[0].id}))
+                                   kwargs={'pk': teachers[0].id}))
         teachers = Teacher.objects.all()
         self.assertEqual(teachers.count(), 0)
-
-
-
-
