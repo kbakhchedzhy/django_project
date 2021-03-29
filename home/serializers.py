@@ -12,7 +12,7 @@ class BookSerializer(serializers.ModelSerializer):
 
 class StudentSerializer(serializers.ModelSerializer):
 
-    book = BookSerializer(many=False)
+    book = BookSerializer(many=False, read_only=True)
 
     class Meta:
 
