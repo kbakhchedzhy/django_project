@@ -1,3 +1,4 @@
+import freezegun as freezegun
 from django.test import TestCase  # noqa
 from rest_framework import status  # noqa
 from rest_framework.reverse import reverse
@@ -6,6 +7,7 @@ from rest_framework.test import APITestCase
 from home.models import Book, Student, Subject, Teacher  # noqa
 
 
+@freezegun.freeze_time('2000-01-01 00:00:00')
 class StudentApiTests(APITestCase):
 
     def setUp(self) -> None:
@@ -21,12 +23,18 @@ class StudentApiTests(APITestCase):
                   'results': [{'address': None,
                                'age': None,
                                'birthday': None,
-                               'book': {'title': 'idx3242342'},
+                               'book': {
+                                   'created_at': '2000-01-01T00:00:00Z',
+                                   'title': 'idx3242342',
+                                   'update_at': '2000-01-01T00:00:00Z'},
+                               'created_at': '2000-01-01T00:00:00Z',
                                'description': None,
                                'email': None,
                                'name': 'Zero',
                                'sex': 'unknown',
-                               'surname': 'Admin'}]
+                               'surname': 'Admin',
+                               'update_at': '2000-01-01T00:00:00Z'
+                               }]
                   }
         self.assertEqual(response.json(),
                          result
@@ -60,12 +68,17 @@ class StudentApiTests(APITestCase):
         result = {'address': None,
                   'age': 20,
                   'birthday': None,
-                  'book':  {'title': 'idx3242342'},
+                  'book': {
+                           'created_at': '2000-01-01T00:00:00Z',
+                           'title': 'idx3242342',
+                           'update_at': '2000-01-01T00:00:00Z'},
+                  'created_at': '2000-01-01T00:00:00Z',
                   'description': None,
                   'email': None,
                   'name': 'Second',
                   'sex': 'unknown',
-                  'surname': 'User2'
+                  'surname': 'User2',
+                  'update_at': '2000-01-01T00:00:00Z'
                   }
 
         self.assertEqual(response.json(), result)
@@ -78,6 +91,7 @@ class StudentApiTests(APITestCase):
         self.assertEqual(students.count(), 0)
 
 
+@freezegun.freeze_time('2000-01-01 00:00:00')
 class SubjectApiTests(APITestCase):
 
     def setUp(self) -> None:
@@ -89,7 +103,9 @@ class SubjectApiTests(APITestCase):
                   'next': None,
                   'previous': None,
                   'results': [{
-                      'name_of_subject': 'Physics'}]
+                      'created_at': '2000-01-01T00:00:00Z',
+                      'name_of_subject': 'Physics',
+                      'update_at': '2000-01-01T00:00:00Z'}]
                   }
         self.assertEqual(response.json(),
                          result
@@ -116,7 +132,10 @@ class SubjectApiTests(APITestCase):
                                            kwargs={'pk': subjects[0].id}),
                                    data=data, format='json'
                                    )
-        result = {'name_of_subject': 'Biology for child'
+        result = {
+            'created_at': '2000-01-01T00:00:00Z',
+            'name_of_subject': 'Biology for child',
+            'update_at': '2000-01-01T00:00:00Z'
                   }
 
         self.assertEqual(response.json(), result)
@@ -129,6 +148,7 @@ class SubjectApiTests(APITestCase):
         self.assertEqual(students.count(), 0)
 
 
+@freezegun.freeze_time('2000-01-01 00:00:00')
 class BookApiTests(APITestCase):
 
     def setUp(self) -> None:
@@ -140,7 +160,9 @@ class BookApiTests(APITestCase):
                   'next': None,
                   'previous': None,
                   'results': [{
-                      'title': 'idx_732923'}]
+                      'created_at': '2000-01-01T00:00:00Z',
+                      'title': 'idx_732923',
+                      'update_at': '2000-01-01T00:00:00Z'}]
                   }
         self.assertEqual(response.json(),
                          result
@@ -167,7 +189,10 @@ class BookApiTests(APITestCase):
                                            kwargs={'pk': book[0].id}),
                                    data=data, format='json'
                                    )
-        result = {'title': 'idx_1111923'
+        result = {
+            'created_at': '2000-01-01T00:00:00Z',
+            'title': 'idx_1111923',
+            'update_at': '2000-01-01T00:00:00Z'
                   }
 
         self.assertEqual(response.json(), result)
@@ -180,6 +205,7 @@ class BookApiTests(APITestCase):
         self.assertEqual(students.count(), 0)
 
 
+@freezegun.freeze_time('2000-01-01 00:00:00')
 class TeacherApiTests(APITestCase):
 
     def setUp(self) -> None:
@@ -191,8 +217,11 @@ class TeacherApiTests(APITestCase):
         result = {'count': 1,
                   'next': None,
                   'previous': None,
-                  'results': [{'name': 'Zero',
-                               'surname': 'Teacher'}]
+                  'results': [{
+                      'created_at': '2000-01-01T00:00:00Z',
+                      'name': 'Zero',
+                      'surname': 'Teacher',
+                      'update_at': '2000-01-01T00:00:00Z'}]
                   }
         self.assertEqual(response.json(),
                          result
@@ -222,8 +251,11 @@ class TeacherApiTests(APITestCase):
                                            kwargs={'pk': teachers[0].id}),
                                    data=data, format='json'
                                    )
-        result = {'name': 'Second',
-                  'surname': 'Teacher-2'
+        result = {
+            'created_at': '2000-01-01T00:00:00Z',
+            'name': 'Second',
+            'surname': 'Teacher-2',
+            'update_at': '2000-01-01T00:00:00Z'
                   }
 
         self.assertEqual(response.json(), result)

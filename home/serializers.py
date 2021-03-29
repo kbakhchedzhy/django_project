@@ -18,7 +18,8 @@ class StudentSerializer(serializers.ModelSerializer):
 
         model = Student
         fields = ['name', 'surname', 'age', 'sex', 'address',
-                  'description', 'birthday', 'email', 'book', 'created_at', 'update_at']
+                  'description', 'birthday', 'email', 'book',
+                  'created_at', 'update_at']
 
 
 class SubjectSerializer(serializers.ModelSerializer):
